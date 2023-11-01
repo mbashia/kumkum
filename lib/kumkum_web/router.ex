@@ -20,8 +20,7 @@ defmodule KumkumWeb.Router do
   scope "/", KumkumWeb do
     pipe_through :browser
 
-    get "/", PageController, :index
-    
+    # get "/", PageController, :index
   end
 
   # Other scopes may use custom stacks.
@@ -74,6 +73,8 @@ defmodule KumkumWeb.Router do
 
   scope "/", KumkumWeb do
     pipe_through [:browser, :require_authenticated_user]
+    live "/", LinkLive.Index, :index
+
     live "/links", LinkLive.Index, :index
     live "/links/new", LinkLive.Index, :new
     live "/links/:id/edit", LinkLive.Index, :edit

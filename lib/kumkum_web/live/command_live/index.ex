@@ -9,16 +9,36 @@ defmodule KumkumWeb.CommandLive.Index do
   def mount(_params, session, socket) do
     user = Accounts.get_user_by_session_token(session["user_token"])
     IO.inspect(user)
+    changeset = Commands.change_command(%Command{})
 
     {:ok,
      socket
-     |> assign(:commands, list_commands())
-     |> assign(:user, user)}
+     |> assign(:commands, list_commands(user.id))
+     |> assign(:user, user)
+     |> assign(:search_changeset, changeset)}
   end
 
   @impl true
   def handle_params(params, _url, socket) do
     {:noreply, apply_action(socket, socket.assigns.live_action, params)}
+  end
+
+  @spec handle_event(<<_::48, _::_*72>>, any(), %{
+          :assigns =>
+            atom()
+            | %{
+                :user => atom() | %{:id => any(), optional(any()) => any()},
+                optional(any()) => any()
+              },
+          optional(any()) => any()
+        }) :: {:noreply, map()}
+  def handle_event("validate_search", %{"command" => %{"command" => search}}, socket) do
+    IO.inspect(search)
+    commands = Commands.search(search, socket.assigns.user.id)
+
+    {:noreply,
+     socket
+     |> assign(:commands, commands)}
   end
 
   defp apply_action(socket, :edit, %{"id" => id}) do
@@ -44,10 +64,10 @@ defmodule KumkumWeb.CommandLive.Index do
     command = Commands.get_command!(id)
     {:ok, _} = Commands.delete_command(command)
 
-    {:noreply, assign(socket, :commands, list_commands())}
+    {:noreply, assign(socket, :commands, list_commands(socket.assigns.user.id))}
   end
 
-  defp list_commands do
-    Commands.list_commands()
+  defp list_commands(user_id) do
+    Commands.list_commands(user_id)
   end
 end

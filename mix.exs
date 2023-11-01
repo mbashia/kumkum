@@ -49,6 +49,7 @@ defmodule Kumkum.MixProject do
       {:telemetry_poller, "~> 1.0"},
       {:gettext, "~> 0.18"},
       {:jason, "~> 1.2"},
+      {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
       {:plug_cowboy, "~> 2.5"}
     ]
   end

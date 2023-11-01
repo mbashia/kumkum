@@ -13,7 +13,22 @@
     />
   </.modal>
 <% end %>
-
+<.form
+    let={f}
+    for={@search_changeset}
+    phx-change="validate_search"
+    >
+  
+   
+    <%= text_input f, :command,placeholder: "search command" %>
+    <%= error_tag f, :command %>
+  
+    
+  
+    <div>
+      <%= submit "Save", phx_disable_with: "Saving..." %>
+    </div>
+  </.form>
 <table>
   <thead>
     <tr>

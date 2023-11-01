@@ -17,9 +17,36 @@ defmodule Kumkum.Commands do
       [%Command{}, ...]
 
   """
-  def list_commands do
-    Repo.all(Command)
+  def list_commands(user_id) do
+    Repo.all(from c in Command, where: c.user_id == ^user_id)
   end
+
+  def search(search, user_id) do
+    query =
+      from c in Command,
+        where: fragment("? LIKE ?", c.command, ^"%#{search}%") or fragment("? LIKE ?", c.description, ^"%#{search}%") and c.user_id == ^user_id
+
+    Repo.all(query)
+    |> Repo.preload(:user)
+  end
+
+  # def search(search) do
+  #   #   if search == "" do
+  #   #     search_results =
+  #   #       Repo.all(Trip)
+  #   #       |> Repo.preload(:user)
+  #   #   else
+  #   #     new_search = String.downcase(search)
+
+  #   #     search_results =
+  #   #       Repo.all(Trip)
+  #   #       |> Enum.filter(fn trip ->
+  #   #         String.contains?(String.downcase(trip.from), new_search) or
+  #   #           String.contains?(String.downcase(trip.to), new_search)
+  #   #       end)
+  #   #       |> Repo.preload(:user)
+  #   #   end
+  #   # end
 
   @doc """
   Gets a single command.

@@ -9,11 +9,12 @@ defmodule KumkumWeb.LinkLive.Index do
   def mount(_params, session, socket) do
     user = Accounts.get_user_by_session_token(session["user_token"])
     IO.inspect(user)
-
+changeset = Links.change_link(%Link{})
     {:ok,
      socket
-     |> assign(:links, list_links())
-     |> assign(:user, user)}
+     |> assign(:links, list_links(user.id))
+     |> assign(:user, user)
+    |>assign(:search_changeset, changeset)}
   end
 
   @impl true
@@ -25,6 +26,15 @@ defmodule KumkumWeb.LinkLive.Index do
     socket
     |> assign(:page_title, "Edit Link")
     |> assign(:link, Links.get_link!(id))
+  end
+
+  def handle_event("validate_search", %{"link" => %{"link" => search}}, socket) do
+    IO.inspect(search)
+    links = Links.search(search, socket.assigns.user.id)
+
+    {:noreply,
+     socket
+     |> assign(:links, links)}
   end
 
   defp apply_action(socket, :new, _params) do
@@ -44,10 +54,10 @@ defmodule KumkumWeb.LinkLive.Index do
     link = Links.get_link!(id)
     {:ok, _} = Links.delete_link(link)
 
-    {:noreply, assign(socket, :links, list_links())}
+    {:noreply, assign(socket, :links, list_links(socket.assigns.user.id))}
   end
 
-  defp list_links do
-    Links.list_links()
+  defp list_links(user_id)do
+    Links.list_links(user_id)
   end
 end

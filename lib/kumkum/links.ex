@@ -17,8 +17,18 @@ defmodule Kumkum.Links do
       [%Link{}, ...]
 
   """
-  def list_links do
-    Repo.all(Link)
+  def list_links(user_id) do
+    Repo.all(from l in Link, where: l.user_id == ^user_id)
+
+  end
+
+  def search(search, user_id) do
+    query =
+      from l in Link,
+        where: fragment("? LIKE ?", l.link, ^"%#{search}%") or fragment("? LIKE ?", l.description, ^"%#{search}%") and l.user_id == ^user_id
+
+    Repo.all(query)
+    |> Repo.preload(:user)
   end
 
   @doc """
