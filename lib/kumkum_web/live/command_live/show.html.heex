@@ -1,0 +1,31 @@
+<h1>Show Command</h1>
+
+<%= if @live_action in [:edit] do %>
+  <.modal return_to={Routes.command_show_path(@socket, :show, @command)}>
+    <.live_component
+      module={KumkumWeb.CommandLive.FormComponent}
+      id={@command.id}
+      title={@page_title}
+      action={@live_action}
+      command={@command}
+      return_to={Routes.command_show_path(@socket, :show, @command)}
+    />
+  </.modal>
+<% end %>
+
+<ul>
+
+  <li>
+    <strong>Command:</strong>
+    <%= @command.command %>
+  </li>
+
+  <li>
+    <strong>Description:</strong>
+    <%= @command.description %>
+  </li>
+
+</ul>
+
+<span><%= live_patch "Edit", to: Routes.command_show_path(@socket, :edit, @command), class: "button" %></span> |
+<span><%= live_redirect "Back", to: Routes.command_index_path(@socket, :index) %></span>

@@ -1,0 +1,42 @@
+<h1>Listing Commands</h1>
+
+<%= if @live_action in [:new, :edit] do %>
+  <.modal return_to={Routes.command_index_path(@socket, :index)}>
+    <.live_component
+      module={KumkumWeb.CommandLive.FormComponent}
+      id={@command.id || :new}
+      title={@page_title}
+      action={@live_action}
+      command={@command}
+      user ={@user}
+      return_to={Routes.command_index_path(@socket, :index)}
+    />
+  </.modal>
+<% end %>
+
+<table>
+  <thead>
+    <tr>
+      <th>Command</th>
+      <th>Description</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody id="commands">
+    <%= for command <- @commands do %>
+      <tr id={"command-#{command.id}"}>
+        <td><%= command.command %></td>
+        <td><%= command.description %></td>
+
+        <td>
+          <span><%= live_redirect "Show", to: Routes.command_show_path(@socket, :show, command) %></span>
+          <span><%= live_patch "Edit", to: Routes.command_index_path(@socket, :edit, command) %></span>
+          <span><%= link "Delete", to: "#", phx_click: "delete", phx_value_id: command.id, data: [confirm: "Are you sure?"] %></span>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<span><%= live_patch "New Command", to: Routes.command_index_path(@socket, :new) %></span>
