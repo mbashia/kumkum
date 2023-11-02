@@ -18,8 +18,8 @@ config :kumkum, Kumkum.Repo,
 config :kumkum, KumkumWeb.Endpoint,
   # Binding to loopback ipv4 address prevents access from other machines.
   # Change to `ip: {0, 0, 0, 0}` to allow access from other machines.
-  http: [port: 4000],
-  check_origin: false,
+  http: [port: 4400],
+  check_origin: true,
   code_reloader: true,
   debug_errors: true,
   secret_key_base: "ukWyP0vM+vy8IzkPWWaIdH0dayyaaDw43jW6AsAe8w2Hz6BYU2SsdetiV4BycQPy",
