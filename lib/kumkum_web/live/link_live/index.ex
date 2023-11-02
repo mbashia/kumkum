@@ -9,12 +9,13 @@ defmodule KumkumWeb.LinkLive.Index do
   def mount(_params, session, socket) do
     user = Accounts.get_user_by_session_token(session["user_token"])
     IO.inspect(user)
-changeset = Links.change_link(%Link{})
+    changeset = Links.change_link(%Link{})
+
     {:ok,
      socket
      |> assign(:links, list_links(user.id))
      |> assign(:user, user)
-    |>assign(:search_changeset, changeset)}
+     |> assign(:search_changeset, changeset)}
   end
 
   @impl true
@@ -57,7 +58,7 @@ changeset = Links.change_link(%Link{})
     {:noreply, assign(socket, :links, list_links(socket.assigns.user.id))}
   end
 
-  defp list_links(user_id)do
+  defp list_links(user_id) do
     Links.list_links(user_id)
   end
 end

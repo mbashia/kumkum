@@ -18,10 +18,14 @@ defmodule KumkumWeb.Router do
   end
 
   scope "/", KumkumWeb do
-    pipe_through :browser
+   pipe_through [:browser, :require_authenticated_admin]
+   live "/users", UserLive.Index, :index
+
+
 
     # get "/", PageController, :index
   end
+ 
 
   # Other scopes may use custom stacks.
   # scope "/api", KumkumWeb do
@@ -93,6 +97,7 @@ defmodule KumkumWeb.Router do
     put "/users/settings", UserSettingsController, :update
     get "/users/settings/confirm_email/:token", UserSettingsController, :confirm_email
   end
+
 
   scope "/", KumkumWeb do
     pipe_through [:browser]

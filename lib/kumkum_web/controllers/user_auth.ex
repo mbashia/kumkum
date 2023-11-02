@@ -139,6 +139,25 @@ defmodule KumkumWeb.UserAuth do
     end
   end
 
+  def require_authenticated_admin(conn, _opts) do
+    IO.inspect conn.assigns[:email]
+    value =  if conn.assigns[:current_user] && conn.assigns.current_user.email == "admin@gmail.com" do
+      true
+    else
+      false
+    end
+    IO.inspect(value)
+    if conn.assigns[:current_user] &&  conn.assigns.current_user.email == "admin@gmail.com" do
+      conn
+    else
+      conn
+      |> put_flash(:error, "you cannot view this page")
+      |> maybe_store_return_to()
+      |> redirect(to: signed_in_path(conn))
+      |> halt()
+    end
+  end
+
   defp maybe_store_return_to(%{method: "GET"} = conn) do
     put_session(conn, :user_return_to, current_path(conn))
   end

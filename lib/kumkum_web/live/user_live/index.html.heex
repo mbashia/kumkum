@@ -1,0 +1,22 @@
+<div>
+<table>
+  <thead>
+    <tr>
+      <th>email</th>
+      <th>phone number</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody id="links">
+    <%= for user <- @users do %>
+      <tr id={"user-#{user.id}"}>
+        <td><%= user.email %></td>
+        <td><%= user.phone_number %></td>
+
+        
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+</div>

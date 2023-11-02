@@ -26,6 +26,10 @@ defmodule Kumkum.Accounts do
     Repo.get_by(User, email: email)
   end
 
+  def get_users() do
+    Repo.all(User)
+  end
+
   @doc """
   Gets a user by email and password.
 
