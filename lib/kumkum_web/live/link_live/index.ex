@@ -30,8 +30,8 @@ defmodule KumkumWeb.LinkLive.Index do
   end
 
   def handle_event("validate_search", %{"link" => %{"link" => search}}, socket) do
-    IO.inspect(search)
     links = Links.search(search, socket.assigns.user.id)
+    IO.inspect(links)
 
     {:noreply,
      socket

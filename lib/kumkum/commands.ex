@@ -22,14 +22,19 @@ defmodule Kumkum.Commands do
   end
 
   def search(search, user_id) do
-    query =
-      from c in Command,
-        where:
-          fragment("? LIKE ?", c.command, ^"%#{search}%") or
-            (fragment("? LIKE ?", c.description, ^"%#{search}%") and c.user_id == ^user_id)
+    if search == "" do
+      list_commands(user_id)
+    else
+      query =
+        from c in Command,
+          where:
+            fragment("? LIKE ?", c.command, ^"%#{search}%") or
+              fragment("? LIKE ?", c.description, ^"%#{search}%"),
+          where: c.user_id == ^user_id
 
-    Repo.all(query)
-    |> Repo.preload(:user)
+      Repo.all(query)
+      |> Repo.preload(:user)
+    end
   end
 
   # def search(search) do

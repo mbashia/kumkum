@@ -1,7 +1,6 @@
 defmodule KumkumWeb.UserLive.Index do
   use KumkumWeb, :live_view
 
-
   alias Kumkum.Accounts
 
   @impl true
@@ -14,6 +13,7 @@ defmodule KumkumWeb.UserLive.Index do
      |> assign(:user, user)
      |> assign(:users, users)}
   end
+
   @impl true
 
   def handle_params(params, _url, socket) do

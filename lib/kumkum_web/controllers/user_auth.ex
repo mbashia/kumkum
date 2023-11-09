@@ -140,14 +140,18 @@ defmodule KumkumWeb.UserAuth do
   end
 
   def require_authenticated_admin(conn, _opts) do
-    IO.inspect conn.assigns[:email]
-    value =  if conn.assigns[:current_user] && conn.assigns.current_user.email == "admin@gmail.com" do
-      true
-    else
-      false
-    end
+    IO.inspect(conn.assigns[:email])
+
+    value =
+      if conn.assigns[:current_user] && conn.assigns.current_user.email == "admin@gmail.com" do
+        true
+      else
+        false
+      end
+
     IO.inspect(value)
-    if conn.assigns[:current_user] &&  conn.assigns.current_user.email == "admin@gmail.com" do
+
+    if conn.assigns[:current_user] && conn.assigns.current_user.email == "admin@gmail.com" do
       conn
     else
       conn

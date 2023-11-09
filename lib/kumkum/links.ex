@@ -22,14 +22,19 @@ defmodule Kumkum.Links do
   end
 
   def search(search, user_id) do
-    query =
-      from l in Link,
-        where:
-          fragment("? LIKE ?", l.link, ^"%#{search}%") or
-            (fragment("? LIKE ?", l.description, ^"%#{search}%") and l.user_id == ^user_id)
+    if search == "" do
+      list_links(user_id)
+    else
+      query =
+        from l in Link,
+          where:
+            fragment("? LIKE ?", l.link, ^"%#{search}%") or
+              fragment("? LIKE ?", l.description, ^"%#{search}%"),
+          where: l.user_id == ^user_id
 
-    Repo.all(query)
-    |> Repo.preload(:user)
+      Repo.all(query)
+      |> Repo.preload(:user)
+    end
   end
 
   @doc """
