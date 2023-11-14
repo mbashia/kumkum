@@ -10,6 +10,15 @@
       <%= live_flash(@flash, :error) %>
     </p>
   <% end %>
-
-  <%= @inner_content %>
+  <div style="position:fixed; margin-left:20px;left:0px; top:150px; bottom:0px; width:100px; padding-top:60px; ">
+    <div style="margin-bottom:30px;">
+      <%= live_redirect("links", to: Routes.link_index_path(@socket, :index)) %>
+    </div>
+    <div>
+      <%= live_redirect("commands", to: Routes.command_index_path(@socket, :index)) %>
+    </div>
+  </div>
+  <div style="margin-left:150px;">
+    <%= @inner_content %>
+  </div>
 </main>

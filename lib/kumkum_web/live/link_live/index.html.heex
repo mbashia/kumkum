@@ -18,10 +18,6 @@
 <.form let={f} for={@search_changeset} phx-change="validate_search">
   <%= text_input(f, :link, placeholder: "search link") %>
   <%= error_tag(f, :link) %>
-
-  <div>
-    <%= submit("Save", phx_disable_with: "Saving...") %>
-  </div>
 </.form>
 <table>
   <thead>
