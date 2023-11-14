@@ -3,5 +3,5 @@ defmodule Kumkum.Repo do
     otp_app: :kumkum,
     adapter: Ecto.Adapters.Postgres
 
-  use Scrivener, page_size: 1
+  use Scrivener, page_size: 5
 end
