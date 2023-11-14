@@ -50,7 +50,8 @@ defmodule Kumkum.MixProject do
       {:gettext, "~> 0.18"},
       {:jason, "~> 1.2"},
       {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
-      {:plug_cowboy, "~> 2.5"}
+      {:plug_cowboy, "~> 2.5"},
+      {:scrivener_ecto, "~> 2.7"}
     ]
   end
 

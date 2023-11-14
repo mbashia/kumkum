@@ -17,6 +17,16 @@ defmodule Kumkum.Links do
       [%Link{}, ...]
 
   """
+
+  def paginate_links(params, user_id) do
+    Repo.paginate(paginate_query(user_id), params)
+  end
+
+  def paginate_query(user_id) do
+    query = from(l in Link, where: l.user_id == ^user_id)
+    query
+  end
+
   def list_links(user_id) do
     Repo.all(from l in Link, where: l.user_id == ^user_id)
   end

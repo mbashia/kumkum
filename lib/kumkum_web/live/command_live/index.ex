@@ -13,14 +13,28 @@ defmodule KumkumWeb.CommandLive.Index do
 
     {:ok,
      socket
-     |> assign(:commands, list_commands(user.id))
+     
      |> assign(:user, user)
-     |> assign(:search_changeset, changeset)}
+   }
   end
 
   @impl true
   def handle_params(params, _url, socket) do
-    {:noreply, apply_action(socket, socket.assigns.live_action, params)}
+    commands = Commands.paginate_commands(params, socket.assigns.user.id)
+
+
+    changeset = Commands.change_command(%Command{})
+
+
+    {:noreply,
+    socket
+    |> apply_action(socket.assigns.live_action, params)
+    |> assign(:commands, commands.entries)
+    |> assign(:search_changeset, changeset)
+    |> assign(:total_pages, commands.total_pages)
+    |> assign(:page_number, commands.page_number)
+    |> assign(:total_entries, commands.total_entries)
+  }
   end
 
   @spec handle_event(<<_::48, _::_*72>>, any(), %{

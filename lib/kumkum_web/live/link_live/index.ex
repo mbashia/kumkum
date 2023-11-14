@@ -6,21 +6,31 @@ defmodule KumkumWeb.LinkLive.Index do
   alias Kumkum.Accounts
 
   @impl true
-  def mount(_params, session, socket) do
+  def mount(params, session, socket) do
     user = Accounts.get_user_by_session_token(session["user_token"])
-    IO.inspect(user)
+
     changeset = Links.change_link(%Link{})
 
     {:ok,
      socket
-     |> assign(:links, list_links(user.id))
-     |> assign(:user, user)
-     |> assign(:search_changeset, changeset)}
+     |> assign(:user, user)}
   end
 
   @impl true
   def handle_params(params, _url, socket) do
-    {:noreply, apply_action(socket, socket.assigns.live_action, params)}
+    links = Links.paginate_links(params, socket.assigns.user.id)
+    changeset = Links.change_link(%Link{})
+
+    IO.inspect(links)
+
+    {:noreply,
+     socket
+     |> apply_action(socket.assigns.live_action, params)
+     |> assign(:links, links.entries)
+     |> assign(:search_changeset, changeset)
+     |> assign(:total_pages, links.total_pages)
+     |> assign(:page_number, links.page_number)
+     |> assign(:total_entries, links.total_entries)}
   end
 
   defp apply_action(socket, :edit, %{"id" => id}) do

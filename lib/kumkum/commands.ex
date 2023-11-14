@@ -17,6 +17,15 @@ defmodule Kumkum.Commands do
       [%Command{}, ...]
 
   """
+
+  def paginate_commands(params, user_id) do
+    Repo.paginate(paginate_query(user_id), params)
+  end
+
+  def paginate_query(user_id) do
+    query = from(c in Command, where: c.user_id == ^user_id)
+    query
+  end
   def list_commands(user_id) do
     Repo.all(from c in Command, where: c.user_id == ^user_id)
   end

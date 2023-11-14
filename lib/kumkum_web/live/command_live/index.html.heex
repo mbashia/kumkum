@@ -1,4 +1,5 @@
 <h1>Listing Commands</h1>
+<span><%= live_patch("New Command", to: Routes.command_index_path(@socket, :new)) %></span>
 
 <%= if @live_action in [:new, :edit] do %>
   <.modal return_to={Routes.command_index_path(@socket, :index)}>
@@ -57,4 +58,49 @@
   </tbody>
 </table>
 
-<span><%= live_patch("New Command", to: Routes.command_index_path(@socket, :new)) %></span>
+<div style="display: flex; flex-direction: row; padding: 2px;">
+  <div>
+    <%= if @page_number > 1 do %>
+      <%= live_patch(
+            to: Routes.command_index_path(@socket, :index, page: @page_number - 1),
+            class: "pagination-command"
+          ) do %>
+        <div class="flex gap-2 items-center ">
+          Previous
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+
+  <div style="display: flex; flex-direction: row; padding: 2px;">
+    <%= for idx <-  Enum.to_list(1..@total_pages) do %>
+      <%= live_patch(
+            to: Routes.command_index_path(@socket, :index, page: idx),
+            class: "pagination-command"
+          ) do %>
+        <%= if @page_number == idx do %>
+          <p style="border: 1px solid black; padding-left: 5px; padding-right: 5px;">
+            <%= idx %>
+          </p>
+        <% else %>
+          <p style="padding-left: 5px; padding-right: 5px;">
+            <%= idx %>
+          </p>
+        <% end %>
+      <% end %>
+    <% end %>
+  </div>
+
+  <div>
+    <%= if @page_number < @total_pages do %>
+      <%= live_patch(
+            to: Routes.command_index_path(@socket, :index, page: @page_number + 1),
+            class: "pagination-command"
+          )  do %>
+        <div class="flex gap-2 items-center ">
+          Next
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+</div>
