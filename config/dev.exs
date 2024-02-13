@@ -2,7 +2,7 @@ import Config
 
 # Configure your database
 config :kumkum, Kumkum.Repo,
-  username: "mbashia",
+  username: "root",
   password: "Khohisan@7",
   database: "kumkum_dev",
   hostname: "localhost",
